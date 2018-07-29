@@ -78,7 +78,11 @@
         <div class="row mt-4">
           <div class="col-12 col-md-4 offset-md-4">
             <div class="alert alert-success" style="display: none" id="alert">El mensaje fue enviado</div>
-            <div class="alert alert-primary" style="display: none" id="alert-chat"></div>
+            <div class="alert alert-light" style="display: none" id="alert-chat">
+              <img src="img/avatar2.png" width="30px">
+              <span id="alert-chat-text" class="ml-2"></span>
+
+            </div>
           </div>
 
         </div>
@@ -101,7 +105,7 @@
     const socket = io();
 
     let counter = 0;
-socket.on('arduino:data', function (dataSerial) {
+    socket.on('arduino:data', function (dataSerial) {
       // console.log(dataSerial);
       console.log(dataSerial.value.toString());
       if (dataSerial.value.toString() == 'u') {
@@ -141,36 +145,39 @@ socket.on('arduino:data', function (dataSerial) {
       counter++;
     });
 
-    var flag=true;
+    var flag = true;
 
     socket.on('arduino:barra', function (dataSerial) {
       // console.log(dataSerial);
       //console.log(dataSerial.value);
-      $("#move").width((parseInt(dataSerial.value)*$("#side").width())/100);
-      $("#moveid").text(parseInt(dataSerial.value)+" %");
+      $("#move").width((parseInt(dataSerial.value) * $("#side").width()) / 100);
+      $("#moveid").text(parseInt(dataSerial.value) + " %");
 
-        if(parseInt(dataSerial.value) > 75){
-        
-        
+      if (parseInt(dataSerial.value) > 75) {
+
+
         console.log('exito');
         $("#alert").css('display', 'block');
-        setTimeout(function(){
+        setTimeout(function () {
           $("#alert").css('display', 'none');
         }, 3000);
         socket.emit('arduino:check', currentTask);
-        }
+      }
 
-      
-      
+
+
     });
 
-    socket.on('arduino:chat-response', function(mes){
+    socket.on('arduino:chat-response', function (mes) {
       var q = $("#alert-chat");
-      q.text(mes.value.toString());
+      var date = new Date();
+      var hora = date.getHours();
+      var minutos = date.getMinutes('mm');
+      $("#alert-chat-text").html(mes.toString()+" <span class='font-size-14 float-right'>"+hora.toString()+":"+ minutos.toString()+"</span>");
       q.css('display', 'block');
-      setTimeout(function(){
-          q.css('display', 'none');
-        }, 3000)
+      setTimeout(function () {
+        q.css('display', 'none');
+      }, 3000)
     })
 
 

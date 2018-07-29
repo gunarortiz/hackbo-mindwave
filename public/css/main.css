@@ -71,7 +71,7 @@ body, html{
 .message{
     border-radius: 20px;
     background-color: white;
-    padding: 10px 15px 30px 15px; 
+    padding: 10px 15px 15px 15px; 
     color: #333;
     width: fit-content;
 }
@@ -101,4 +101,8 @@ body, html{
     .mt-119{
         margin-top: 10px;
     }
+}
+
+.font-size-14{
+    font-size: 14px;
 }

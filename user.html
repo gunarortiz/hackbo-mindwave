@@ -40,8 +40,7 @@
             <h6>Pedro Perez</h6>
         </div>
         <div class="container mt-3">
-            <h5>Mensajes</h5>
-            <div id="con"></div>
+            <div id="con" class=" pb-5 mb-3"></div>
 
         </div>
 
@@ -75,19 +74,42 @@
             counter++;
 
             var text="";
+            var date=new Date();
+            var hora=date.getHours();
+            var minutos=date.getMinutes('mm');
             for (var i = 0; i<messages.length; i++) {
                 if(i>0)
                 if(messages[i] != messages[i-1])
                 var dt=new Date() ;
-                    text += '<div class="message mt-3">' + messages[i] + '<br><div class="date">' + dt.getHours()+":"+ dt.getMinutes() + '</div></div>';
+                    text += '<div><div class="message mt-3">' + messages[i] + '<br><div class="date"> ' + hora.toString()+":"+ minutos.toString() + '</div></div></div>';
             }
 
             $("#con").html(text)
         });
 
         function sendmessage(){
-            var a = $("chat-message").value();
+            var a = $("#chat-message").val();
             socket.emit('arduino:chat', a);
+
+
+            messages[counter] = a;
+            counter++;
+
+            var text="";
+            var date=new Date();
+            var hora=date.getHours();
+            var minutos=date.getMinutes('mm');
+            for (var i = 0; i<messages.length; i++) {
+                if(i>0)
+                if(messages[i] != messages[i-1])
+                var dt=new Date() ;
+                    text += '<div class="d-flex flex-row-reverse"><div class="message mt-3">' + messages[i] + '<br><div class="date"> ' + hora.toString()+":"+ minutos.toString() + '</div></div></div>';
+            }
+
+            $("#con").html(text)
+
+
+            $("#chat-message").val("");
         }
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
