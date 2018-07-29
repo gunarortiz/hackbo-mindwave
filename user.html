@@ -49,7 +49,7 @@
     </div>
     <div class="footer py-2 px-2 d-flex" id="chat">
             <input type="text" class="form-control mr-2" id="chat-message">
-            <button class="button-ok">Send</button>
+            <button class="button-ok" onclick="sendmessage()">Send</button>
 
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -85,15 +85,10 @@
             $("#con").html(text)
         });
 
-        $(function () {
-            console.log("cargando!");
-            var messagetex = $('#chat-message');
-            var chat = $('chat');
-            $('#message_box').submit(function (e) {
-                e.preventDefault();
-                console.log(messagetex.val());
-            })
-        });
+        function sendmessage(){
+            var a = $("chat-message").value();
+            socket.emit('arduino:chat', a);
+        }
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>

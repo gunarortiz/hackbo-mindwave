@@ -55,6 +55,11 @@ io.on('connection', function (socket) {
     console.log('message: ' + msg);
     sendMessage(msg)
   });
+
+  socket.on('arduino:chat', function (msg) {
+    console.log('message: ' + msg);
+    io.emit('arduino:chat-response', msg);
+  });
 });
 
 
@@ -87,3 +92,4 @@ function sendMessage(a) {
       value: message
   })
 }
+

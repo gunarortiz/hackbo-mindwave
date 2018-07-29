@@ -78,6 +78,7 @@
         <div class="row mt-4">
           <div class="col-12 col-md-4 offset-md-4">
             <div class="alert alert-success" style="display: none" id="alert">El mensaje fue enviado</div>
+            <div class="alert alert-primary" style="display: none" id="alert-chat"></div>
           </div>
 
         </div>
@@ -155,12 +156,21 @@ socket.on('arduino:data', function (dataSerial) {
         $("#alert").css('display', 'block');
         setTimeout(function(){
           $("#alert").css('display', 'none');
-        }, 3000)
+        }, 3000);
         socket.emit('arduino:check', currentTask);
         }
 
       
       
+    });
+
+    socket.on('arduino:chat-response', function(mes){
+      var q = $("#alert-chat");
+      q.text(mes.value.toString());
+      q.css('display', 'block');
+      setTimeout(function(){
+          q.css('display', 'none');
+        }, 3000)
     })
 
 
