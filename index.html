@@ -100,16 +100,16 @@
     const socket = io();
 
     let counter = 0;
-  /*  socket.on('arduino:data', function (dataSerial) {
+socket.on('arduino:data', function (dataSerial) {
       // console.log(dataSerial);
       console.log(dataSerial.value)
-      if (dataSerial.value == 'u') {
+      if (dataSerial.value == 'U') {
         currentTask += 1;
         if (currentTask == 4) {
           currentTask = 0;
         }
       }
-      else if (dataSerial == 'd') {
+      else if (dataSerial == 'D') {
         currentTask -= 1;
         if (currentTask = -1) {
           currentTask = 3;
@@ -135,12 +135,16 @@
       }
       counter++;
     });
-*/
+
     socket.on('arduino:barra', function (dataSerial) {
       // console.log(dataSerial);
       console.log(dataSerial.value);
       $("#move").width((parseInt(dataSerial.value)*$("#side").width())/100);
       $("#moveid").text(parseInt(dataSerial.value)+" %");
+
+      if(parseInt(dataSerial.value > 69)){
+        socket.emit('arduino:check', currentTask);
+      }
     })
 
 

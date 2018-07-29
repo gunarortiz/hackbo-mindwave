@@ -12,11 +12,11 @@ const io = SocketIo.listen(server);
 
 // routes
 app.get('/', (req, res) => {
-  res.sendFile(__dirname +'/index.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/user', (req, res) => {
-  res.sendFile(__dirname +'/user.html');
+  res.sendFile(__dirname + '/user.html');
 });
 
 // static files
@@ -35,21 +35,37 @@ mySerial.pipe(parser);
 mySerial.on('open', function () {
   console.log('Opened Port.');
 });
-/*
+
 mySerial.on('data', function (data) {
   console.log(data.toString());
-  io.emit('arduino:data', {
-    value: data.toString()
+
+  if (data.substring(0, 1) == 'U' || data.substring(0, 1) == 'D' || data.substring(0, 1) == 'N') {
+    io.emit('arduino:data', {
+      value: data.toString()
+    });
+  }
+  else {
+    io.emit('arduino:barra', {
+      value: data.toString().substring(2, data.toString().length - 1)
+    });
+  }
+
+});
+
+io.on('connection', function (socket) {
+  socket.on('arduino:check', function (msg) {
+    console.log('message: ' + msg);
+    sendMessage(msg)
   });
-});*/
+});
 
 
-mySerial.on('data', function (data) {
+/*mySerial.on('data', function (data) {
   console.log(data.toString());
   io.emit('arduino:barra', {
     value: data.toString()
   });
-});
+});*/
 
 
 mySerial.on('err', function (data) {
@@ -63,8 +79,11 @@ server.listen(3000, () => {
 
 
 
-function sendMessage(a){
-  io.emit('arduino:message', {
-    value: a.toString()
-  });
+function sendMessage(a) {
+  mySerial.on('data', function (data) {
+    io.emit('arduino:message', {
+      value: a.toString()
+    })
+  }
+  )
 }
