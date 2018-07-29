@@ -1,0 +1,104 @@
+body, html{
+    height: 100%;
+    background-color: #F0F0F0;
+}
+
+.bg-danger{
+    background-color: #FF6262 !important;
+}
+
+.content{
+    height: 100%;
+}
+
+.lateral{
+    width: 30px;
+}
+
+.card-edit{
+    background-color: white;
+    padding: 15px;
+    font-size: 21px;
+    font-weight: 400;
+    border-radius: 14px;
+    -webkit-box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.05);
+    box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.05);
+    text-align: center;
+    height: 238px;
+    transition: all 0.2s;
+
+
+}
+
+.card-edit.actived{
+    border: 5px solid #FF6262;
+    transition: all 0.2s;
+
+}
+
+.card-edit.actived.checked{
+    background-color: #FF6262;
+    color: white;
+    transition: all 0.2s;
+
+}
+
+.mt-18{
+    margin-top: 18%;
+}
+
+.mt-119{
+    margin-top: 90px;
+}
+
+.alert{
+    font-size: 20px; 
+}
+
+.side{
+    background-color: white;
+    
+}
+
+.move{
+    background-color: #5EA9FF;
+    height: 24px;
+    width: 10%;
+    transition: all 0.2s;
+}
+
+.message{
+    border-radius: 20px;
+    background-color: white;
+    padding: 10px 15px 30px 15px; 
+    color: #333;
+    width: fit-content;
+}
+
+.message .date{
+    float: right;
+    font-size: 13px;
+}
+
+.footer{
+    background-color: white;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 55px;
+}
+
+.button-ok{
+    background-color: #FF6262;
+    color: white;
+    border: 1px solid #FF6262;
+    border-radius: 8px
+}
+
+@media (max-width:575px){
+    .mt-119{
+        margin-top: 10px;
+    }
+}
