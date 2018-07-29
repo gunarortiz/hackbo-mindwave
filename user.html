@@ -47,9 +47,10 @@
 
     </div>
     </div>
-    <div class="footer py-2 px-2 d-flex">
-        <input type="text" class="form-control mr-2">
-        <button class="button-ok">Send</button>
+    <div class="footer py-2 px-2 d-flex" id="chat">
+            <input type="text" class="form-control mr-2" id="chat-message">
+            <button class="button-ok">Send</button>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -60,43 +61,39 @@
 
     <script src="/socket.io/socket.io.js" charset="utf-8"></script>
     <script type="text/javascript">
-
-        var messages = [];
-
+   
+   var messages = [];
 
         const socket = io();
 
         let counter = 0;
         socket.on('arduino:message', function (message) {
             // console.log(dataSerial);
-            console.log(message.value);
-            var message = { title: "", date: "" };
-            if (parseInt(message.value) == 0) {
-                message.title = "Tengo hambre"
-            }
-            else if (parseInt(message.value) == 1) {
-                message.title = "Quiero ir al baño"
-            }
-            else if (parseInt(message.value) == 2) {
-                message.title = "Tengo frio"
-            }
-            else if (parseInt(message.value) == 3) {
-                message.title = "Puedes venir"
-            }
-            message.date = new Date();
+            console.log(message.value.toString());
+            
+            messages[counter] = message.value.toString();
+            counter++;
 
-            messages.push(message)
+            var text="";
+            for (var i = 0; i<messages.length; i++) {
+                if(i>0)
+                if(messages[i] != messages[i-1])
+                var dt=new Date() ;
+                    text += '<div class="message mt-3">' + messages[i] + '<br><div class="date">' + dt.getHours()+":"+ dt.getMinutes() + '</div></div>';
+            }
 
-            $("#con").html(function () {
-                var text;
-                for (var i = 0; messages.length; messages++) {
-                    text += '<div class="message mt-3">' + messages[i].title + '<br><div class="date">' + messages[i].date + '</div></div>'
-                }
-            })
+            $("#con").html(text)
         });
 
-
-
+        $(function () {
+            console.log("cargando!");
+            var messagetex = $('#chat-message');
+            var chat = $('chat');
+            $('#message_box').submit(function (e) {
+                e.preventDefault();
+                console.log(messagetex.val());
+            })
+        });
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>

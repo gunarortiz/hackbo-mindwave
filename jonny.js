@@ -1,4 +1,3 @@
-
 const path = require('path');
 const express = require('express');
 const http = require('http');
@@ -26,7 +25,7 @@ const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
 
-const mySerial = new SerialPort('COM3', {
+const mySerial = new SerialPort('COM80', {
   baudRate: 57600
 });
 
@@ -37,16 +36,15 @@ mySerial.on('open', function () {
 });
 
 mySerial.on('data', function (data) {
-  console.log(data.toString());
+  console.log(data.toString().substring(data.toString().length - 3, data.toString().length - 2));
 
-  if (data.substring(0, 1) == 'U' || data.substring(0, 1) == 'D' || data.substring(0, 1) == 'N') {
+  var letra = data.toString().substring(data.toString().length - 3, data.toString().length - 2);
+  if (letra == 'u' || letra == 'd' || letra == 'n') {
     io.emit('arduino:data', {
-      value: data.toString()
+      value: letra
     });
-  }
-  else {
     io.emit('arduino:barra', {
-      value: data.toString().substring(2, data.toString().length - 1)
+      value: parseInt(data.toString())
     });
   }
 
@@ -58,14 +56,6 @@ io.on('connection', function (socket) {
     sendMessage(msg)
   });
 });
-
-
-/*mySerial.on('data', function (data) {
-  console.log(data.toString());
-  io.emit('arduino:barra', {
-    value: data.toString()
-  });
-});*/
 
 
 mySerial.on('err', function (data) {
@@ -80,10 +70,20 @@ server.listen(3000, () => {
 
 
 function sendMessage(a) {
-  mySerial.on('data', function (data) {
-    io.emit('arduino:message', {
-      value: a.toString()
-    })
+  var message = "";
+  if (parseInt(a) == 0) {
+    message = "Tengo hambre"
+  } else if (parseInt(a) == 1) {
+    message = "Quiero ir al baño"
+  } else if (parseInt(a) == 2) {
+    message = "Tengo frio"
+  } else if (parseInt(a) == 3) {
+    message = "Puedes venir"
+  } else {
+    message = "no va a funcionar";
   }
-  )
+
+    io.emit('arduino:message', {
+      value: message
+  })
 }

@@ -77,7 +77,7 @@
         <div class="lateral"></div>
         <div class="row mt-4">
           <div class="col-12 col-md-4 offset-md-4">
-            <div class="alert alert-success">El mensaje fue enviado</div>
+            <div class="alert alert-success" style="display: none" id="alert">El mensaje fue enviado</div>
           </div>
 
         </div>
@@ -102,16 +102,16 @@
     let counter = 0;
 socket.on('arduino:data', function (dataSerial) {
       // console.log(dataSerial);
-      console.log(dataSerial.value)
-      if (dataSerial.value == 'U') {
+      console.log(dataSerial.value.toString());
+      if (dataSerial.value.toString() == 'u') {
         currentTask += 1;
         if (currentTask == 4) {
           currentTask = 0;
         }
       }
-      else if (dataSerial == 'D') {
+      else if (dataSerial.value.toString() == 'd') {
         currentTask -= 1;
-        if (currentTask = -1) {
+        if (currentTask == -1) {
           currentTask = 3;
         }
       }
@@ -120,31 +120,47 @@ socket.on('arduino:data', function (dataSerial) {
       if (currentTask == 0) {
         $("#cero").addClass("actived");
         $("#tres").removeClass("actived");
+        $("#uno").removeClass("actived");
       }
       else if (currentTask == 1) {
         $("#uno").addClass("actived");
         $("#cero").removeClass("actived");
+        $("#dos").removeClass("actived");
       }
       else if (currentTask == 2) {
         $("#dos").addClass("actived");
         $("#uno").removeClass("actived");
+        $("#tres").removeClass("actived");
       }
-      else {
+      else if (currentTask == 3) {
         $("#tres").addClass("actived");
         $("#dos").removeClass("actived");
+        $("#cero").removeClass("actived");
       }
       counter++;
     });
 
+    var flag=true;
+
     socket.on('arduino:barra', function (dataSerial) {
       // console.log(dataSerial);
-      console.log(dataSerial.value);
+      //console.log(dataSerial.value);
       $("#move").width((parseInt(dataSerial.value)*$("#side").width())/100);
       $("#moveid").text(parseInt(dataSerial.value)+" %");
 
-      if(parseInt(dataSerial.value > 69)){
+        if(parseInt(dataSerial.value) > 75){
+        
+        
+        console.log('exito');
+        $("#alert").css('display', 'block');
+        setTimeout(function(){
+          $("#alert").css('display', 'none');
+        }, 3000)
         socket.emit('arduino:check', currentTask);
-      }
+        }
+
+      
+      
     })
 
 
